@@ -13,3 +13,19 @@
   kubernetes.core.k8s:
     namespace: "{{ argocd_namespace }}"
     src: /tmp/argocd.yaml
+
+- name: Disable default TLS Certificate
+  kubernetes.core.k8s:
+    state: patched
+    namespace: "{{ argocd_namespace }}"
+    kind: Deployment
+    name: argocd-server
+    definition:
+      spec:
+        template:
+          spec:
+            containers:
+            - name: argocd-server
+              command:
+              - argocd-server
+              - --insecure
