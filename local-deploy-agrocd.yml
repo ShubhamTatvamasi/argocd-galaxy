@@ -1,0 +1,6 @@
+---
+- name: Install Argo CD on local cluster
+  hosts: localhost
+  connection: local
+  roles:
+    - role: argocd

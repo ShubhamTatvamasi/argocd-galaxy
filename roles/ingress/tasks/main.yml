@@ -1,0 +1,23 @@
+---
+- name: Create Ingress rule for Argo CD
+  kubernetes.core.k8s:
+    namespace: "{{ argocd_namespace }}"
+    definition:
+      apiVersion: networking.k8s.io/v1
+      kind: Ingress
+      metadata:
+        name: argocd
+        annotations:
+          kubernetes.io/ingress.class: caddy
+      spec:
+        rules:
+          - host: "{{ argocd_domain }}"
+            http:
+              paths:
+              - path: /
+                pathType: Prefix
+                backend:
+                  service:
+                    name: argocd-server
+                    port:
+                      number: 80

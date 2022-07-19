@@ -1,0 +1,15 @@
+---
+- name: Create namespace for Argo CD
+  kubernetes.core.k8s:
+    name: "{{ argocd_namespace }}"
+    kind: Namespace
+
+- name: Download Argo CD manifest
+  get_url:
+    url: https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+    dest: /tmp/argocd.yaml
+
+- name: Install Argo CD
+  kubernetes.core.k8s:
+    namespace: "{{ argocd_namespace }}"
+    src: /tmp/argocd.yaml
